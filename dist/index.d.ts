@@ -1,2 +1,3 @@
 import { buildUrl } from "./utils";
-export { buildUrl };
+import { authenticate } from "./auth";
+export { buildUrl, authenticate };
