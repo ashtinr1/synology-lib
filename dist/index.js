@@ -1,9 +1,11 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.searchByKeyword = exports.authenticate = exports.buildUrl = void 0;
+exports.download = exports.searchByKeyword = exports.authenticate = exports.buildUrl = void 0;
 const utils_1 = require("./utils");
 Object.defineProperty(exports, "buildUrl", { enumerable: true, get: function () { return utils_1.buildUrl; } });
 const auth_1 = require("./auth");
 Object.defineProperty(exports, "authenticate", { enumerable: true, get: function () { return auth_1.authenticate; } });
 const search_1 = require("./search");
 Object.defineProperty(exports, "searchByKeyword", { enumerable: true, get: function () { return search_1.searchByKeyword; } });
+const download_1 = require("./download");
+Object.defineProperty(exports, "download", { enumerable: true, get: function () { return download_1.download; } });
