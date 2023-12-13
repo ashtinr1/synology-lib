@@ -2,7 +2,7 @@ import { buildUrl } from "./utils"
 
 interface IAuthenticateSuccess {
   data: {
-    did: string,
+    did: string
     sid: string
   }
   success: true

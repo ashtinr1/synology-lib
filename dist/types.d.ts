@@ -10,3 +10,11 @@ export interface ITorrent {
     size: string;
     title: string;
 }
+export interface ITask {
+    id: string;
+    size: number;
+    status: string;
+    title: string;
+    type: string;
+    username: string;
+}
