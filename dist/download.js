@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.removeDownload = exports.download = exports.getDownloadList = void 0;
+exports.pauseDownload = exports.removeDownload = exports.download = exports.getDownloadList = void 0;
 const utils_1 = require("./utils");
 async function getDownloadList(baseUrl, offset, limit, _sid) {
     let url = (0, utils_1.buildUrl)({
@@ -77,3 +77,24 @@ async function removeDownload(baseUrl, id, _sid) {
     throw new Error(`failed to remove download: ${id}`);
 }
 exports.removeDownload = removeDownload;
+async function pauseDownload(baseUrl, id, _sid) {
+    let url = (0, utils_1.buildUrl)({
+        baseUrl,
+        path: "DownloadStation/task.cgi",
+        api: "SYNO.DownloadStation.Task",
+        version: "1",
+        method: "pause",
+        options: {
+            id,
+            _sid
+        }
+    });
+    let response = await fetch(url).then(resp => resp.json());
+    if (response.success && response.data[0].error === 0)
+        return;
+    if (!response.success && response.error.code === 105) {
+        throw new Error("invalid sid");
+    }
+    throw new Error(`failed to pause download: ${id}`);
+}
+exports.pauseDownload = pauseDownload;

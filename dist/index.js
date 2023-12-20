@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.removeDownload = exports.download = exports.getDownloadList = exports.searchByKeyword = exports.authenticate = exports.buildUrl = void 0;
+exports.pauseDownload = exports.removeDownload = exports.download = exports.getDownloadList = exports.searchByKeyword = exports.authenticate = exports.buildUrl = void 0;
 const utils_1 = require("./utils");
 Object.defineProperty(exports, "buildUrl", { enumerable: true, get: function () { return utils_1.buildUrl; } });
 const auth_1 = require("./auth");
@@ -11,3 +11,4 @@ const download_1 = require("./download");
 Object.defineProperty(exports, "getDownloadList", { enumerable: true, get: function () { return download_1.getDownloadList; } });
 Object.defineProperty(exports, "download", { enumerable: true, get: function () { return download_1.download; } });
 Object.defineProperty(exports, "removeDownload", { enumerable: true, get: function () { return download_1.removeDownload; } });
+Object.defineProperty(exports, "pauseDownload", { enumerable: true, get: function () { return download_1.pauseDownload; } });

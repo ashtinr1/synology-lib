@@ -130,3 +130,42 @@ export async function removeDownload(baseUrl: string, id: string, _sid: string):
 
   throw new Error(`failed to remove download: ${id}`)
 }
+
+interface IPauseDownloadSuccess {
+  data: Array<{
+    error: number
+    id: string
+  }>
+  success: true
+}
+
+interface IPauseDownloadError {
+  error: {
+    code: number
+  }
+  success: false
+}
+
+export async function pauseDownload(baseUrl: string, id: string, _sid: string): Promise<void> {
+  let url = buildUrl({
+    baseUrl,
+    path: "DownloadStation/task.cgi",
+    api: "SYNO.DownloadStation.Task",
+    version: "1",
+    method: "pause",
+    options: {
+      id,
+      _sid
+    }
+  })
+
+  let response: IPauseDownloadSuccess | IPauseDownloadError = await fetch(url).then(resp => resp.json())
+
+  if (response.success && response.data[0].error === 0) return
+
+  if (!response.success && response.error.code === 105) {
+    throw new Error("invalid sid")
+  }
+
+  throw new Error(`failed to pause download: ${id}`)
+}
