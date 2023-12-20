@@ -167,5 +167,52 @@ export async function pauseDownload(baseUrl: string, id: string, _sid: string): 
     throw new Error("invalid sid")
   }
 
+  if (!response.success && response.error.code === 101) {
+    throw new Error("download is already paused or the id is invalid")
+  }
+
   throw new Error(`failed to pause download: ${id}`)
+}
+
+interface IResumeDownloadSuccess {
+  data: Array<{
+    error: number
+    id: string
+  }>
+  success: true
+}
+
+interface IResumeDownloadError {
+  error: {
+    code: number
+  }
+  success: false
+}
+
+export async function resumeDownload(baseUrl: string, id: string, _sid: string): Promise<void> {
+  let url = buildUrl({
+    baseUrl,
+    path: "DownloadStation/task.cgi",
+    api: "SYNO.DownloadStation.Task",
+    version: "1",
+    method: "resume",
+    options: {
+      id,
+      _sid
+    }
+  })
+
+  let response: IResumeDownloadSuccess | IResumeDownloadError = await fetch(url).then(resp => resp.json())
+
+  if (response.success && (response.data[0].error === 0 || response.data[0].error === 405)) return
+
+  if (!response.success && response.error.code === 105) {
+    throw new Error("invalid sid")
+  }
+
+  if (response.success && (response.data[0].error === 405 || response.data[0].error === 544)) {
+    throw new Error("download is already resumed or the id is invalid")
+  }
+
+  throw new Error(`failed to resume download: ${id}`)
 }
