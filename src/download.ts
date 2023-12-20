@@ -1,7 +1,7 @@
 import { buildUrl } from "./utils"
 import { ITask } from "./types"
 
-interface IGetDownloadsSuccess {
+interface IGetDownloadListSuccess {
   data: {
     offset: number
     tasks: Array<ITask>
@@ -10,14 +10,14 @@ interface IGetDownloadsSuccess {
   success: true
 }
 
-interface IGetDownloadsError {
+interface IGetDownloadListError {
   error: {
     code: number
   }
   success: false
 }
 
-export async function getDownloads(baseUrl: string, offset: number, limit: number, _sid: string): Promise<Array<ITask>> {
+export async function getDownloadList(baseUrl: string, offset: number, limit: number, _sid: string): Promise<Array<ITask>> {
   let url = buildUrl({
     baseUrl,
     path: "DownloadStation/task.cgi",
@@ -31,7 +31,7 @@ export async function getDownloads(baseUrl: string, offset: number, limit: numbe
     }
   })
 
-  let response: IGetDownloadsSuccess | IGetDownloadsError = await fetch(url).then(resp => resp.json())
+  let response: IGetDownloadListSuccess | IGetDownloadListError = await fetch(url).then(resp => resp.json())
 
   if (response.success) {
     return response.data.tasks
@@ -86,4 +86,47 @@ export async function download(baseUrl: string, uri: string, destination: string
   }
 
   throw new Error("failed to queue download")
+}
+
+interface IRemoveDownloadSuccess {
+  data: Array<{
+    error: number
+    id: string
+  }>
+  success: true
+}
+
+interface IRemoveDownloadError {
+  error: {
+    code: number
+  }
+  success: false
+}
+
+export async function removeDownload(baseUrl: string, id: string, _sid: string): Promise<void> {
+  let url = buildUrl({
+    baseUrl,
+    path: "DownloadStation/task.cgi",
+    api: "SYNO.DownloadStation.Task",
+    version: "1",
+    method: "delete",
+    options: {
+      id,
+      _sid
+    }
+  })
+
+  let response: IRemoveDownloadSuccess | IRemoveDownloadError = await fetch(url).then(resp => resp.json())
+
+  if (response.success && response.data[0].error === 0) return
+
+  if (response.success && response.data[0].error === 544) {
+    throw new Error(`id does not exist: ${response.data[0].id}`)
+  }
+
+  if (!response.success && response.error.code === 105) {
+    throw new Error("invalid sid")
+  }
+
+  throw new Error(`failed to remove download: ${id}`)
 }

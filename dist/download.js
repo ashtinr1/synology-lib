@@ -1,8 +1,8 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.download = exports.getDownloads = void 0;
+exports.removeDownload = exports.download = exports.getDownloadList = void 0;
 const utils_1 = require("./utils");
-async function getDownloads(baseUrl, offset, limit, _sid) {
+async function getDownloadList(baseUrl, offset, limit, _sid) {
     let url = (0, utils_1.buildUrl)({
         baseUrl,
         path: "DownloadStation/task.cgi",
@@ -24,7 +24,7 @@ async function getDownloads(baseUrl, offset, limit, _sid) {
     }
     throw new Error("failed to get downloads");
 }
-exports.getDownloads = getDownloads;
+exports.getDownloadList = getDownloadList;
 async function download(baseUrl, uri, destination, _sid) {
     let url = (0, utils_1.buildUrl)({
         baseUrl,
@@ -53,3 +53,27 @@ async function download(baseUrl, uri, destination, _sid) {
     throw new Error("failed to queue download");
 }
 exports.download = download;
+async function removeDownload(baseUrl, id, _sid) {
+    let url = (0, utils_1.buildUrl)({
+        baseUrl,
+        path: "DownloadStation/task.cgi",
+        api: "SYNO.DownloadStation.Task",
+        version: "1",
+        method: "delete",
+        options: {
+            id,
+            _sid
+        }
+    });
+    let response = await fetch(url).then(resp => resp.json());
+    if (response.success && response.data[0].error === 0)
+        return;
+    if (response.success && response.data[0].error === 544) {
+        throw new Error(`id does not exist: ${response.data[0].id}`);
+    }
+    if (!response.success && response.error.code === 105) {
+        throw new Error("invalid sid");
+    }
+    throw new Error(`failed to remove download: ${id}`);
+}
+exports.removeDownload = removeDownload;
