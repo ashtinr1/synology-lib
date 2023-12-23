@@ -1,8 +1,8 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.resumeDownload = exports.pauseDownload = exports.removeDownload = exports.download = exports.getDownloadList = void 0;
+exports.resumeDownload = exports.pauseDownload = exports.removeDownload = exports.download = exports.getDownloadsList = void 0;
 const utils_1 = require("./utils");
-async function getDownloadList(baseUrl, offset, limit, _sid) {
+async function getDownloadsList(baseUrl, offset, limit, _sid) {
     let url = (0, utils_1.buildUrl)({
         baseUrl,
         path: "DownloadStation/task.cgi",
@@ -24,7 +24,7 @@ async function getDownloadList(baseUrl, offset, limit, _sid) {
     }
     throw new Error("failed to get downloads");
 }
-exports.getDownloadList = getDownloadList;
+exports.getDownloadsList = getDownloadsList;
 async function download(baseUrl, uri, destination, _sid) {
     let url = (0, utils_1.buildUrl)({
         baseUrl,

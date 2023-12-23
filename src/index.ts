@@ -1,18 +1,20 @@
 import { buildUrl } from "./utils"
 import { authenticate } from "./auth"
 import { searchByKeyword } from "./search"
-import { getDownloadList, download, removeDownload, pauseDownload, resumeDownload } from "./download"
+import { getDownloadsList, download, removeDownload, pauseDownload, resumeDownload } from "./download"
+import { getFilesFromDirectory } from "./file"
 import { ITorrent, ITask } from "./types"
 
 export {
   buildUrl,
   authenticate,
   searchByKeyword,
-  getDownloadList,
+  getDownloadsList,
   download,
   removeDownload,
   pauseDownload,
   resumeDownload,
+  getFilesFromDirectory,
   ITorrent,
   ITask
 }

@@ -1,7 +1,7 @@
 import { buildUrl } from "./utils"
 import { ITask } from "./types"
 
-interface IGetDownloadListSuccess {
+interface IGetDownloadsListSuccess {
   data: {
     offset: number
     tasks: Array<ITask>
@@ -10,14 +10,14 @@ interface IGetDownloadListSuccess {
   success: true
 }
 
-interface IGetDownloadListError {
+interface IGetDownloadsListError {
   error: {
     code: number
   }
   success: false
 }
 
-export async function getDownloadList(baseUrl: string, offset: number, limit: number, _sid: string): Promise<Array<ITask>> {
+export async function getDownloadsList(baseUrl: string, offset: number, limit: number, _sid: string): Promise<Array<ITask>> {
   let url = buildUrl({
     baseUrl,
     path: "DownloadStation/task.cgi",
@@ -31,7 +31,7 @@ export async function getDownloadList(baseUrl: string, offset: number, limit: nu
     }
   })
 
-  let response: IGetDownloadListSuccess | IGetDownloadListError = await fetch(url).then(resp => resp.json())
+  let response: IGetDownloadsListSuccess | IGetDownloadsListError = await fetch(url).then(resp => resp.json())
 
   if (response.success) {
     return response.data.tasks

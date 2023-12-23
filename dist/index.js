@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.resumeDownload = exports.pauseDownload = exports.removeDownload = exports.download = exports.getDownloadList = exports.searchByKeyword = exports.authenticate = exports.buildUrl = void 0;
+exports.getFilesFromDirectory = exports.resumeDownload = exports.pauseDownload = exports.removeDownload = exports.download = exports.getDownloadsList = exports.searchByKeyword = exports.authenticate = exports.buildUrl = void 0;
 const utils_1 = require("./utils");
 Object.defineProperty(exports, "buildUrl", { enumerable: true, get: function () { return utils_1.buildUrl; } });
 const auth_1 = require("./auth");
@@ -8,8 +8,10 @@ Object.defineProperty(exports, "authenticate", { enumerable: true, get: function
 const search_1 = require("./search");
 Object.defineProperty(exports, "searchByKeyword", { enumerable: true, get: function () { return search_1.searchByKeyword; } });
 const download_1 = require("./download");
-Object.defineProperty(exports, "getDownloadList", { enumerable: true, get: function () { return download_1.getDownloadList; } });
+Object.defineProperty(exports, "getDownloadsList", { enumerable: true, get: function () { return download_1.getDownloadsList; } });
 Object.defineProperty(exports, "download", { enumerable: true, get: function () { return download_1.download; } });
 Object.defineProperty(exports, "removeDownload", { enumerable: true, get: function () { return download_1.removeDownload; } });
 Object.defineProperty(exports, "pauseDownload", { enumerable: true, get: function () { return download_1.pauseDownload; } });
 Object.defineProperty(exports, "resumeDownload", { enumerable: true, get: function () { return download_1.resumeDownload; } });
+const file_1 = require("./file");
+Object.defineProperty(exports, "getFilesFromDirectory", { enumerable: true, get: function () { return file_1.getFilesFromDirectory; } });
